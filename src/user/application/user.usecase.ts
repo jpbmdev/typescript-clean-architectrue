@@ -14,13 +14,17 @@ export class UserUseCase {
     return this.userRepository.findUserByEmail(email);
   }
 
-  public listUsers(): Promise<UserEntity[]> {
+  async listUsers(): Promise<UserEntity[]> {
     return this.userRepository.listUsers();
   }
 
-  public async createUser(addUserDto: AddUserDto) {
+  async createUser(addUserDto: AddUserDto) {
     const userValue = new UserValue(addUserDto);
     const userCreated = await this.userRepository.createUser(userValue);
     return userCreated;
+  }
+
+  async deleteUserByEmail(email: string): Promise<void> {
+    return this.userRepository.deleteUserByEmail(email);
   }
 }

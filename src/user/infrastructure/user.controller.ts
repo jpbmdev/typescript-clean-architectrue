@@ -5,6 +5,7 @@ import {
 import {
   BadRequestResponse,
   CreatedResponse,
+  NotFoundResponse,
   ServerErrorResponse,
   SuccessResponse,
 } from "../../core/util/generateResponse";
@@ -20,12 +21,16 @@ export class UserController {
     this.getUser = this.getUser.bind(this);
     this.listUsers = this.listUsers.bind(this);
     this.insertUser = this.insertUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   async getUser(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { email } = httpRequest.params as { email: string };
+
       const user = await this.userUseCase.getUserByEmail(email);
+      if (!user) return NotFoundResponse("User Not Found");
+
       return SuccessResponse(user);
     } catch (error: any) {
       return ServerErrorResponse(error.message);
@@ -50,6 +55,20 @@ export class UserController {
 
       const created = await this.userUseCase.createUser(body);
       return CreatedResponse(created);
+    } catch (error: any) {
+      return ServerErrorResponse(error.message);
+    }
+  }
+
+  async deleteUser(httpRequest: HttpRequest): Promise<HttpResponse> {
+    try {
+      const { email } = httpRequest.params as { email: string };
+
+      const exists = await this.userUseCase.getUserByEmail(email);
+      if (!exists) return NotFoundResponse("User Not Found");
+
+      await this.userUseCase.deleteUserByEmail(email);
+      return SuccessResponse({ message: "User Deleted." });
     } catch (error: any) {
       return ServerErrorResponse(error.message);
     }

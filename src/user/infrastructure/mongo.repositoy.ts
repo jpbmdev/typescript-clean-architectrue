@@ -17,4 +17,8 @@ export class MongoRepository implements UserRepository {
     const createdUser = await UserModel.create(userEntity);
     return createdUser as UserEntity;
   }
+
+  async deleteUserByEmail(email: string): Promise<void> {
+    await UserModel.deleteOne({ email });
+  }
 }

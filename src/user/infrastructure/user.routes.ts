@@ -6,6 +6,7 @@ const userController = generateMongoController();
 
 const UserRoutes = async (server: FastifyInstance) => {
   server.get("/:email", fastiflyAdapterRoute(userController, "getUser"));
+  server.delete("/:email", fastiflyAdapterRoute(userController, "deleteUser"));
   server.get("/", fastiflyAdapterRoute(userController, "listUsers"));
   server.post("/", fastiflyAdapterRoute(userController, "insertUser"));
 };
