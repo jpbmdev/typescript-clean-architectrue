@@ -1,14 +1,14 @@
 import { FastifyInstance } from "fastify";
-import { fastiflyAdapterRoute } from "./route.adapter";
-import { generateMongoController } from "../factory/generateMongoController";
+import { fastiflyRouteAdapter } from "../factory/fastiflyRouteAdapter";
+import { mongoController } from "../factory/mongoController";
 
-const userController = generateMongoController();
+const userController = mongoController();
 
 const UserRoutes = async (server: FastifyInstance) => {
-  server.get("/:email", fastiflyAdapterRoute(userController, "getUser"));
-  server.delete("/:email", fastiflyAdapterRoute(userController, "deleteUser"));
-  server.get("/", fastiflyAdapterRoute(userController, "listUsers"));
-  server.post("/", fastiflyAdapterRoute(userController, "insertUser"));
+  server.get("/:email", fastiflyRouteAdapter(userController, "getUser"));
+  server.delete("/:email", fastiflyRouteAdapter(userController, "deleteUser"));
+  server.get("/", fastiflyRouteAdapter(userController, "listUsers"));
+  server.post("/", fastiflyRouteAdapter(userController, "insertUser"));
 };
 
 export default UserRoutes;

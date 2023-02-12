@@ -6,7 +6,6 @@ import {
   BadRequestResponse,
   CreatedResponse,
   NotFoundResponse,
-  ServerErrorResponse,
   SuccessResponse,
 } from "../../core/util/generateResponse";
 import { UserUseCase } from "../application/user.usecase";
@@ -25,53 +24,37 @@ export class UserController {
   }
 
   async getUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    try {
-      const { email } = httpRequest.params as { email: string };
+    const { email } = httpRequest.params as { email: string };
 
-      const user = await this.userUseCase.getUserByEmail(email);
-      if (!user) return NotFoundResponse("User Not Found");
+    const user = await this.userUseCase.getUserByEmail(email);
+    if (!user) return NotFoundResponse("User Not Found");
 
-      return SuccessResponse(user);
-    } catch (error: any) {
-      return ServerErrorResponse(error.message);
-    }
+    return SuccessResponse(user);
   }
 
   async listUsers(): Promise<HttpResponse> {
-    try {
-      const users = await this.userUseCase.listUsers();
-      return SuccessResponse(users);
-    } catch (error: any) {
-      return ServerErrorResponse(error.message);
-    }
+    const users = await this.userUseCase.listUsers();
+    return SuccessResponse(users);
   }
 
   async insertUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    try {
-      const body = httpRequest.body as AddUserDto;
+    const body = httpRequest.body as AddUserDto;
 
-      const exists = await this.userUseCase.getUserByEmail(body.email);
-      if (exists) return BadRequestResponse("User Already Exists");
+    const exists = await this.userUseCase.getUserByEmail(body.email);
+    if (exists) return BadRequestResponse("User Already Exists");
 
-      const created = await this.userUseCase.createUser(body);
-      return CreatedResponse(created);
-    } catch (error: any) {
-      return ServerErrorResponse(error.message);
-    }
+    const created = await this.userUseCase.createUser(body);
+    return CreatedResponse(created);
   }
 
   async deleteUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    try {
-      const { email } = httpRequest.params as { email: string };
+    const { email } = httpRequest.params as { email: string };
 
-      const exists = await this.userUseCase.getUserByEmail(email);
-      if (!exists) return NotFoundResponse("User Not Found");
+    const exists = await this.userUseCase.getUserByEmail(email);
+    if (!exists) return NotFoundResponse("User Not Found");
 
-      await this.userUseCase.deleteUserByEmail(email);
-      return SuccessResponse({ message: "User Deleted." });
-    } catch (error: any) {
-      return ServerErrorResponse(error.message);
-    }
+    await this.userUseCase.deleteUserByEmail(email);
+    return SuccessResponse({ message: "User Deleted." });
   }
 }
 
