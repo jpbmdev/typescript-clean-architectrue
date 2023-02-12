@@ -2,6 +2,12 @@ import {
   HttpRequest,
   HttpResponse,
 } from "../../core/interfaces/http.interface";
+import {
+  BadRequestResponse,
+  CreatedResponse,
+  ServerErrorResponse,
+  SuccessResponse,
+} from "../../core/util/generateResponse";
 import { UserUseCase } from "../application/user.usecase";
 import { AddUserDto } from "../domain/dto/addUser.dto";
 
@@ -17,25 +23,36 @@ export class UserController {
   }
 
   async getUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { email } = httpRequest.params as { email: string };
-    const user = await this.userUseCase.getUserByEmail(email);
-    return { statusCode: 200, body: user };
+    try {
+      const { email } = httpRequest.params as { email: string };
+      const user = await this.userUseCase.getUserByEmail(email);
+      return SuccessResponse(user);
+    } catch (error: any) {
+      return ServerErrorResponse(error.message);
+    }
   }
 
   async listUsers(): Promise<HttpResponse> {
-    const users = await this.userUseCase.listUsers();
-    return { statusCode: 200, body: users };
+    try {
+      const users = await this.userUseCase.listUsers();
+      return SuccessResponse(users);
+    } catch (error: any) {
+      return ServerErrorResponse(error.message);
+    }
   }
 
   async insertUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const body = httpRequest.body as AddUserDto;
+    try {
+      const body = httpRequest.body as AddUserDto;
 
-    const exists = await this.userUseCase.getUserByEmail(body.email);
-    if (exists)
-      return { statusCode: 400, body: { message: "User Already Exists" } };
+      const exists = await this.userUseCase.getUserByEmail(body.email);
+      if (exists) return BadRequestResponse("User Already Exists");
 
-    const created = await this.userUseCase.createUser(body);
-    return { statusCode: 200, body: created };
+      const created = await this.userUseCase.createUser(body);
+      return CreatedResponse(created);
+    } catch (error: any) {
+      return ServerErrorResponse(error.message);
+    }
   }
 }
 
