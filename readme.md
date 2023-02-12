@@ -1,4 +1,6 @@
-### Clean Architecture API REST
+### Clean Architecture Domain Driven API REST
+
+![alt text](https://raw.githubusercontent.com/abpframework/abp/rel-4.2/docs/en/images/domain-driven-design-clean-architecture.png)
 
 ## Template used for typescript setup
 https://khalilstemmler.com/blogs/typescript/node-starter-project/

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { HttpRequest } from "../../core/interfaces/http.interface";
-import UserController from "../infrastructure/user.controller";
+import UserController from "../controller/user.controller";
 
 export const fastiflyRouteAdapter = (
   controller: UserController,
