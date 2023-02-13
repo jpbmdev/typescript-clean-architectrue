@@ -18,6 +18,15 @@ export class MongoRepository implements UserRepository {
     return createdUser as UserEntity;
   }
 
+  async updateUser(userEntity: UserEntity): Promise<UserEntity | null> {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { email: userEntity.email },
+      userEntity,
+      { returnDocument: "after" }
+    );
+    return updatedUser as UserEntity;
+  }
+
   async deleteUserByEmail(email: string): Promise<void> {
     await UserModel.deleteOne({ email });
   }

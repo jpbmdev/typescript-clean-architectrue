@@ -24,6 +24,11 @@ export class UserUseCase {
     return userCreated;
   }
 
+  async updateUser(userEntity: UserEntity) {
+    const userUpdated = await this.userRepository.updateUser(userEntity);
+    return userUpdated;
+  }
+
   async deleteUserByEmail(email: string): Promise<void> {
     return this.userRepository.deleteUserByEmail(email);
   }
