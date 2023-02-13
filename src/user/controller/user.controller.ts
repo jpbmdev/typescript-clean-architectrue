@@ -5,11 +5,12 @@ import {
 import {
   BadRequestResponse,
   CreatedResponse,
+  ErrorInBodyResponse,
   NotFoundResponse,
   SuccessResponse,
 } from "../../core/util/generateResponse";
 import { UserUseCase } from "../application/user.usecase";
-import { AddUserDto } from "../domain/dto/addUser.dto";
+import { AddUserDto, validateAddUserDto } from "../domain/dto/addUser.dto";
 import { UpdateUserDto } from "../domain/dto/updateUser.dto";
 
 export class UserController {
@@ -41,6 +42,9 @@ export class UserController {
 
   async insertUser(httpRequest: HttpRequest): Promise<HttpResponse> {
     const body = httpRequest.body as AddUserDto;
+
+    const errors = await validateAddUserDto(body);
+    if (errors.length) return ErrorInBodyResponse(errors);
 
     const exists = await this.userUseCase.getUserByEmail(body.email);
     if (exists) return BadRequestResponse("User Already Exists");

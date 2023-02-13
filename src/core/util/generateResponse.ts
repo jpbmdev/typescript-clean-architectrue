@@ -1,3 +1,4 @@
+import { ValidationError } from "class-validator";
 import { HttpResponse } from "../interfaces/http.interface";
 
 export const SuccessResponse = (body: any): HttpResponse => {
@@ -18,6 +19,13 @@ export const BadRequestResponse = (message: string): HttpResponse => {
   return {
     statusCode: 400,
     body: { message },
+  };
+};
+
+export const ErrorInBodyResponse = (body: ValidationError[]): HttpResponse => {
+  return {
+    statusCode: 400,
+    body,
   };
 };
 
