@@ -1,22 +1,6 @@
 import "dotenv/config";
-import fastify from "fastify";
-import mongoDBInit from "./core/database/mongodb";
-import UserRoutes from "./user/infrastructure/user.routes";
+import { Server } from "./core/server/server";
 
-const server = fastify();
+const server = new Server();
 
-server.register(UserRoutes, { prefix: "/user" });
-
-const start = async () => {
-  try {
-    const port = parseInt(process.env.PORT || "3000");
-    await mongoDBInit();
-    await server.listen({ port });
-    console.log(`Server listening on port ${port}`);
-  } catch (error) {
-    server.log.error(error);
-    process.exit(1);
-  }
-};
-
-start();
+server.start();
