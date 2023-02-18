@@ -2,6 +2,9 @@
 
 ![alt text](https://raw.githubusercontent.com/abpframework/abp/rel-4.2/docs/en/images/domain-driven-design-clean-architecture.png)
 
+## Commands:
+ - npm run start:dev
+
 ## Template used for typescript setup
 https://khalilstemmler.com/blogs/typescript/node-starter-project/
 
