@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { HttpRequest } from "../../core/interfaces/http.interface";
 import UserController from "../controller/user.controller";
 
-export const fastiflyRouteAdapter = (
+export const fastifyRouteAdapter = (
   controller: UserController,
   method: keyof UserController
 ) => {
