@@ -19,14 +19,16 @@ export class AddUserDto {
   description: string;
 }
 
-export const validateAddUserDto = async (
-  body: any
-): Promise<ValidationError[]> => {
-  const newAddUserDto = new AddUserDto();
+export const generateAddUserDto = async (
+  data: any
+): Promise<{ addUserDto: AddUserDto; errors: ValidationError[] }> => {
+  const addUserDto = new AddUserDto();
 
-  newAddUserDto.name = body.name;
-  newAddUserDto.email = body.email;
-  newAddUserDto.description = body.description;
+  addUserDto.name = data?.name;
+  addUserDto.email = data?.email;
+  addUserDto.description = data?.description;
 
-  return validate(newAddUserDto);
+  const errors = await validate(addUserDto);
+
+  return { addUserDto, errors };
 };

@@ -10,8 +10,8 @@ import {
   SuccessResponse,
 } from "../../core/util/generateResponse";
 import { UserService } from "../services/user.service";
-import { AddUserDto, validateAddUserDto } from "../domain/dto/addUser.dto";
-import { UpdateUserDto } from "../domain/dto/updateUser.dto";
+import { generateAddUserDto } from "../domain/dto/addUser.dto";
+import { generateUpdateUserDto } from "../domain/dto/updateUser.dto";
 
 export class UserController {
   private readonly userUseCase;
@@ -41,27 +41,33 @@ export class UserController {
   }
 
   async insertUser(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const body = httpRequest.body as AddUserDto;
+    const body = httpRequest.body;
 
-    const errors = await validateAddUserDto(body);
+    const { addUserDto, errors } = await generateAddUserDto(body);
+
     if (errors.length) return ErrorInBodyResponse(errors);
 
-    const exists = await this.userUseCase.getUserByEmail(body.email);
+    const exists = await this.userUseCase.getUserByEmail(addUserDto.email);
     if (exists) return BadRequestResponse("User Already Exists");
 
-    const created = await this.userUseCase.createUser(body);
+    const created = await this.userUseCase.createUser(addUserDto);
     return CreatedResponse(created);
   }
 
   async updateUser(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { email } = httpRequest.params as { email: string };
-    const body = httpRequest.body as UpdateUserDto;
+
+    const body = httpRequest.body;
+
+    const { updateUserDto, errors } = await generateUpdateUserDto(body);
+
+    if (errors.length) return ErrorInBodyResponse(errors);
 
     const user = await this.userUseCase.getUserByEmail(email);
     if (!user) return NotFoundResponse("User Not Found");
 
-    user.name = body.name;
-    user.description = body.description;
+    user.name = updateUserDto.name;
+    user.description = updateUserDto.description;
 
     const updatedUser = await this.userUseCase.updateUser(user);
     return SuccessResponse(updatedUser);
