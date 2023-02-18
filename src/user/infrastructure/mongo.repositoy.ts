@@ -3,19 +3,42 @@ import { UserRepository } from "../domain/user.repository";
 import UserModel from "./user.model";
 
 export class MongoRepository implements UserRepository {
+  private mapDocumentToEntity(document: any): UserEntity {
+    return {
+      _id: document._id.toString(),
+      name: document.name,
+      email: document.email,
+      description: document.description,
+      createdAt: document.createdAt,
+      updatedAt: document.updatedAt,
+    };
+  }
+
+  private mapDocumentsToEntites(documents: any[]): UserEntity[] {
+    return documents.map((document) => ({
+      _id: document._id.toString(),
+      name: document.name,
+      email: document.email,
+      description: document.description,
+      createdAt: document.createdAt,
+      updatedAt: document.updatedAt,
+    }));
+  }
+
   async findUserByEmail(email: string): Promise<UserEntity | null> {
     const user = await UserModel.findOne({ email });
-    return user as UserEntity;
+    if (!user) return null;
+    return this.mapDocumentToEntity(user);
   }
 
   async listUsers(): Promise<UserEntity[]> {
     const users = await UserModel.find();
-    return users as UserEntity[];
+    return this.mapDocumentsToEntites(users);
   }
 
-  async createUser(userEntity: UserEntity): Promise<UserEntity | null> {
+  async createUser(userEntity: UserEntity): Promise<UserEntity> {
     const createdUser = await UserModel.create(userEntity);
-    return createdUser as UserEntity;
+    return this.mapDocumentToEntity(createdUser);
   }
 
   async updateUser(userEntity: UserEntity): Promise<UserEntity | null> {
@@ -24,7 +47,8 @@ export class MongoRepository implements UserRepository {
       userEntity,
       { returnDocument: "after" }
     );
-    return updatedUser as UserEntity;
+    if (!updatedUser) return null;
+    return this.mapDocumentToEntity(updatedUser);
   }
 
   async deleteUserByEmail(email: string): Promise<void> {

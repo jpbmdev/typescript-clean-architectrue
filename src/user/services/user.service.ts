@@ -10,11 +10,11 @@ export class UserService {
     this.userRepository = userRepository;
   }
 
-  async getUserByEmail(email: string): Promise<UserEntity | null> {
+  async getUserByEmail(email: string) {
     return this.userRepository.findUserByEmail(email);
   }
 
-  async listUsers(): Promise<UserEntity[]> {
+  async listUsers() {
     return this.userRepository.listUsers();
   }
 
@@ -29,7 +29,7 @@ export class UserService {
     return userUpdated;
   }
 
-  async deleteUserByEmail(email: string): Promise<void> {
+  async deleteUserByEmail(email: string) {
     return this.userRepository.deleteUserByEmail(email);
   }
 }
