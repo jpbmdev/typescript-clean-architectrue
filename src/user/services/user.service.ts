@@ -1,7 +1,6 @@
 import { AddUserDto } from "../domain/dto/addUser.dto";
 import { UserEntity } from "../domain/user.entity";
 import { UserRepository } from "../domain/user.repository";
-import { UserValue } from "../domain/user.value";
 
 export class UserService {
   private readonly userRepository: UserRepository;
@@ -19,8 +18,7 @@ export class UserService {
   }
 
   async createUser(addUserDto: AddUserDto) {
-    const userValue = new UserValue(addUserDto);
-    const userCreated = await this.userRepository.createUser(userValue);
+    const userCreated = await this.userRepository.createUser(addUserDto);
     return userCreated;
   }
 

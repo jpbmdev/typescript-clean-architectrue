@@ -1,3 +1,4 @@
+import { AddUserDto } from "../domain/dto/addUser.dto";
 import { UserEntity } from "../domain/user.entity";
 import { UserRepository } from "../domain/user.repository";
 import UserModel from "./user.model";
@@ -36,8 +37,8 @@ export class MongoRepository implements UserRepository {
     return this.mapDocumentsToEntites(users);
   }
 
-  async createUser(userEntity: UserEntity): Promise<UserEntity> {
-    const createdUser = await UserModel.create(userEntity);
+  async createUser(addUserDto: AddUserDto): Promise<UserEntity> {
+    const createdUser = await UserModel.create(addUserDto);
     return this.mapDocumentToEntity(createdUser);
   }
 
