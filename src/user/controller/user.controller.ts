@@ -9,14 +9,14 @@ import {
   NotFoundResponse,
   SuccessResponse,
 } from "../../core/util/generateResponse";
-import { UserUseCase } from "../application/user.usecase";
+import { UserService } from "../services/user.service";
 import { AddUserDto, validateAddUserDto } from "../domain/dto/addUser.dto";
 import { UpdateUserDto } from "../domain/dto/updateUser.dto";
 
 export class UserController {
   private readonly userUseCase;
 
-  constructor(userUseCase: UserUseCase) {
+  constructor(userUseCase: UserService) {
     this.userUseCase = userUseCase;
     //Bind data to make the router work
     this.getUser = this.getUser.bind(this);
