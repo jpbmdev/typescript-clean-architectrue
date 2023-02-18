@@ -6,10 +6,17 @@ const userController = mongoController();
 
 const router = Router();
 
-router.get("/:email", expressRouteAdapter(userController, "getUser"));
-router.put("/:email", expressRouteAdapter(userController, "updateUser"));
-router.delete("/:email", expressRouteAdapter(userController, "deleteUser"));
-router.get("/", expressRouteAdapter(userController, "listUsers"));
-router.post("/", expressRouteAdapter(userController, "insertUser"));
+router.get("/user/:email", expressRouteAdapter(userController, "getUser"));
+
+router.put("/user/:email", expressRouteAdapter(userController, "updateUser"));
+
+router.delete(
+  "/user/:email",
+  expressRouteAdapter(userController, "deleteUser")
+);
+
+router.get("/user", expressRouteAdapter(userController, "listUsers"));
+
+router.post("/user", expressRouteAdapter(userController, "insertUser"));
 
 export default router;
