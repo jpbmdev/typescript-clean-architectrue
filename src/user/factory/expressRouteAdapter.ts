@@ -1,12 +1,12 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { Request, Response } from "express";
 import { HttpRequest } from "../../core/interfaces/http.interface";
 import UserController from "../controller/user.controller";
 
-export const fastifyRouteAdapter = (
+export const expressRouteAdapter = (
   controller: UserController,
   method: keyof UserController
 ) => {
-  return async (request: FastifyRequest, reply: FastifyReply) => {
+  return async (request: Request, response: Response) => {
     try {
       const httpRequest: HttpRequest = {
         params: request.params,
@@ -14,9 +14,9 @@ export const fastifyRouteAdapter = (
       };
 
       const httpResponse = await controller[method](httpRequest);
-      reply.status(httpResponse.statusCode).send(httpResponse.body);
+      response.status(httpResponse.statusCode).send(httpResponse.body);
     } catch (error: any) {
-      return reply.status(500).send({ message: error.message });
+      return response.status(500).send({ message: error.message });
     }
   };
 };

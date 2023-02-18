@@ -1,27 +1,27 @@
-import fastify, { FastifyInstance } from "fastify";
-import UserRoutes from "../../user/infrastructure/user.routes";
+import express, { Express } from "express";
+import userRoutes from "../../user/infrastructure/user.routes";
 import mongoDBInit from "../database/mongodb";
 
 export class Server {
-  public server: FastifyInstance;
+  public server: Express;
 
   constructor() {
-    this.server = fastify();
+    this.server = express();
   }
 
   async start() {
     try {
       const port = parseInt(process.env.PORT || "3000");
 
-      this.server.register(UserRoutes, { prefix: "/user" });
-
       await mongoDBInit();
 
-      await this.server.listen({ port });
+      this.server.use("/user", userRoutes);
+
+      this.server.listen(port);
+
       console.log(`Server listening on port ${port}`);
     } catch (error) {
-      console.log(error)
-      this.server.log.error(error);
+      console.log(error);
       process.exit(1);
     }
   }
