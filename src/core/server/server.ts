@@ -13,7 +13,7 @@ export class Server {
     this.server = express();
   }
 
-  async initalizeRoutes() {
+  async initializeRoutes() {
     this.server.use(userRoutes);
 
     const specs = swaggerJsdoc(swaggerJSON);
@@ -28,7 +28,7 @@ export class Server {
 
       this.server.use(express.json());
 
-      this.initalizeRoutes();
+      this.initializeRoutes();
 
       this.server.listen(port);
 
