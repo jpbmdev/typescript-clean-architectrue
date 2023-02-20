@@ -3,9 +3,9 @@ import {
   HttpResponse,
 } from "../../core/interfaces/http.interface";
 import {
-  BadRequestResponse,
+  ConflictResponse,
   CreatedResponse,
-  ErrorInBodyResponse,
+  BadRequestResponse,
   NotFoundResponse,
   SuccessResponse,
 } from "../../core/util/generateResponse";
@@ -45,10 +45,10 @@ export class UserController {
 
     const { addUserDto, errors } = await generateAddUserDto(body);
 
-    if (errors.length) return ErrorInBodyResponse(errors);
+    if (errors.length) return BadRequestResponse(errors);
 
     const exists = await this.userUseCase.getUserByEmail(addUserDto.email);
-    if (exists) return BadRequestResponse("User Already Exists");
+    if (exists) return ConflictResponse("User Already Exists");
 
     const created = await this.userUseCase.createUser(addUserDto);
     return CreatedResponse(created);
@@ -61,7 +61,7 @@ export class UserController {
 
     const { updateUserDto, errors } = await generateUpdateUserDto(body);
 
-    if (errors.length) return ErrorInBodyResponse(errors);
+    if (errors.length) return BadRequestResponse(errors);
 
     const user = await this.userUseCase.getUserByEmail(email);
     if (!user) return NotFoundResponse("User Not Found");

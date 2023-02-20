@@ -15,14 +15,7 @@ export const CreatedResponse = (body: any): HttpResponse => {
   };
 };
 
-export const BadRequestResponse = (message: string): HttpResponse => {
-  return {
-    statusCode: 400,
-    body: { message },
-  };
-};
-
-export const ErrorInBodyResponse = (body: ValidationError[]): HttpResponse => {
+export const BadRequestResponse = (body: ValidationError[]): HttpResponse => {
   return {
     statusCode: 400,
     body,
@@ -39,6 +32,13 @@ export const UnauthorizedResponse = (message: string): HttpResponse => {
 export const NotFoundResponse = (message: string): HttpResponse => {
   return {
     statusCode: 404,
+    body: { message },
+  };
+};
+
+export const ConflictResponse = (message: string): HttpResponse => {
+  return {
+    statusCode: 409,
     body: { message },
   };
 };
