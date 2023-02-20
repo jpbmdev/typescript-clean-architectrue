@@ -22,7 +22,7 @@ const swagger = {
       },
     ],
   },
-  apis: ["./src/user/infrastructure/swagger-docs.ts"],
+  apis: ["./src/core/docs/responses.ts", "./src/user/infrastructure/swagger-docs.ts"],
 };
 
 export default swagger;
