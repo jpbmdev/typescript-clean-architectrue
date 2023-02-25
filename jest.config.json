@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "collectCoverage": true,
+  "coverageReporters": ["json", "html"]
+}
