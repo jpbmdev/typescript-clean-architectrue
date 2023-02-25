@@ -1,8 +1,8 @@
 import { HttpRequest } from "../../../../core/interfaces/http.interface";
 import UserController from "../../../controller/user.controller";
 import { UserRepository } from "../../../domain/user.repository";
-import { MongoRepository } from "../../../infrastructure/mongo.repositoy";
 import { UserService } from "../../../services/user.service";
+import { MockUserRepository } from "../../mock/user.repository";
 
 describe("User Controller", () => {
   let userRepository: UserRepository;
@@ -10,7 +10,7 @@ describe("User Controller", () => {
   let userController: UserController;
 
   beforeAll(() => {
-    userRepository = new MongoRepository();
+    userRepository = new MockUserRepository();
     userService = new UserService(userRepository);
     userController = new UserController(userService);
   });
