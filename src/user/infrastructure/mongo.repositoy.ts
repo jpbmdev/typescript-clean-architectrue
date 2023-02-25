@@ -26,23 +26,23 @@ export class MongoRepository implements UserRepository {
     }));
   }
 
-  async findUserByEmail(email: string): Promise<UserEntity | null> {
+  async findUserByEmail(email: string) {
     const user = await UserModel.findOne({ email });
     if (!user) return null;
     return this.mapDocumentToEntity(user);
   }
 
-  async listUsers(): Promise<UserEntity[]> {
+  async listUsers() {
     const users = await UserModel.find();
     return this.mapDocumentsToEntites(users);
   }
 
-  async createUser(addUserDto: AddUserDto): Promise<UserEntity> {
+  async createUser(addUserDto: AddUserDto) {
     const createdUser = await UserModel.create(addUserDto);
     return this.mapDocumentToEntity(createdUser);
   }
 
-  async updateUser(userEntity: UserEntity): Promise<UserEntity | null> {
+  async updateUser(userEntity: UserEntity) {
     const updatedUser = await UserModel.findOneAndUpdate(
       { email: userEntity.email },
       userEntity,
@@ -52,7 +52,7 @@ export class MongoRepository implements UserRepository {
     return this.mapDocumentToEntity(updatedUser);
   }
 
-  async deleteUserByEmail(email: string): Promise<void> {
+  async deleteUserByEmail(email: string) {
     await UserModel.deleteOne({ email });
   }
 }
