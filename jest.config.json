@@ -4,5 +4,7 @@
     "^.+\\.tsx?$": "ts-jest"
   },
   "collectCoverage": true,
-  "coverageReporters": ["json", "html"]
+  "coverageReporters": ["json", "html"],
+  "testPathIgnorePatterns": ["src/user/test/mock"],
+  "coveragePathIgnorePatterns": ["src/user/test/mock"]
 }

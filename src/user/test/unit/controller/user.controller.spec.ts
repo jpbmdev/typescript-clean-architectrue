@@ -2,7 +2,7 @@ import { HttpRequest } from "../../../../core/interfaces/http.interface";
 import UserController from "../../../controller/user.controller";
 import { UserRepository } from "../../../domain/user.repository";
 import { UserService } from "../../../services/user.service";
-import { MockUserRepository } from "../../mock/user.repository";
+import { MockUserRepository } from "../../mock/user.repository.mock";
 
 describe("User Controller", () => {
   let userRepository: UserRepository;
