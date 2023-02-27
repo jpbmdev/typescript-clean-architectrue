@@ -14,10 +14,10 @@ import { generateAddUserDto } from "../domain/dto/addUser.dto";
 import { generateUpdateUserDto } from "../domain/dto/updateUser.dto";
 
 export class UserController {
-  private readonly userUseCase;
+  private readonly userService;
 
-  constructor(userUseCase: UserService) {
-    this.userUseCase = userUseCase;
+  constructor(userService: UserService) {
+    this.userService = userService;
     //Bind data to make the router work
     this.getUser = this.getUser.bind(this);
     this.listUsers = this.listUsers.bind(this);
@@ -29,14 +29,14 @@ export class UserController {
   async getUser(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { email } = httpRequest.params as { email: string };
 
-    const user = await this.userUseCase.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     if (!user) return NotFoundResponse("User Not Found");
 
     return SuccessResponse(user);
   }
 
   async listUsers(): Promise<HttpResponse> {
-    const users = await this.userUseCase.listUsers();
+    const users = await this.userService.listUsers();
     return SuccessResponse(users);
   }
 
@@ -47,10 +47,10 @@ export class UserController {
 
     if (errors.length) return BadRequestResponse(errors);
 
-    const exists = await this.userUseCase.getUserByEmail(addUserDto.email);
+    const exists = await this.userService.getUserByEmail(addUserDto.email);
     if (exists) return ConflictResponse("User Already Exists");
 
-    const created = await this.userUseCase.createUser(addUserDto);
+    const created = await this.userService.createUser(addUserDto);
     return CreatedResponse(created);
   }
 
@@ -63,23 +63,23 @@ export class UserController {
 
     if (errors.length) return BadRequestResponse(errors);
 
-    const user = await this.userUseCase.getUserByEmail(email);
+    const user = await this.userService.getUserByEmail(email);
     if (!user) return NotFoundResponse("User Not Found");
 
     user.name = updateUserDto.name;
     user.description = updateUserDto.description;
 
-    const updatedUser = await this.userUseCase.updateUser(user);
+    const updatedUser = await this.userService.updateUser(user);
     return SuccessResponse(updatedUser);
   }
 
   async deleteUser(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { email } = httpRequest.params as { email: string };
 
-    const exists = await this.userUseCase.getUserByEmail(email);
+    const exists = await this.userService.getUserByEmail(email);
     if (!exists) return NotFoundResponse("User Not Found");
 
-    await this.userUseCase.deleteUserByEmail(email);
+    await this.userService.deleteUserByEmail(email);
     return SuccessResponse({ message: "User Deleted." });
   }
 }
