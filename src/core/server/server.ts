@@ -20,22 +20,24 @@ export class Server {
     this.server.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
   }
 
-  async start() {
+  async initialize() {
     try {
-      const port = parseInt(process.env.PORT || "3000");
-
       await mongoDBInit();
 
       this.server.use(express.json());
 
       this.initializeRoutes();
-
-      this.server.listen(port);
-
-      console.log(`Server listening on port ${port}`);
     } catch (error) {
       console.log(error);
       process.exit(1);
     }
+  }
+
+  async start() {
+    const port = parseInt(process.env.PORT || "3000");
+
+    this.server.listen(port);
+
+    console.log(`Server listening on port ${port}`);
   }
 }
